@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Municipalidad de Pachac'e1mac | Portal Ciudadano</title>
+  <title>Municipalidad de Pachacámac | Portal Ciudadano</title>
   <meta
     name="description"
-    content="Portal web institucional de la Municipalidad de Pachac'e1mac con pagos en l'ednea, estado de cuenta, arbitrios, tr'e1mites, transparencia y atenci'f3n al vecino."
+    content="Portal web institucional de la Municipalidad de Pachacámac con pagos en línea, estado de cuenta, arbitrios, trámites, transparencia y atención al vecino."
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,8 +14,8 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <style>
 
+  <style>
     :root {
       --primary: #0f4c81;
       --primary-dark: #0a3558;
@@ -27,14 +27,13 @@
       --text: #223043;
       --muted: #66758a;
       --border: #dce4ee;
-      --danger: #d43d3d;
       --success: #178b47;
       --shadow: 0 12px 30px rgba(20, 42, 74, 0.12);
-      --shadow-soft: 0 8px 22px rgba(12, 34, 60, 0.08);
+      --shadow-soft: 0 8px 24px rgba(20, 42, 74, 0.08);
       --radius: 18px;
       --radius-sm: 12px;
       --max: 1240px;
-      --header-offset: 152px;
+      --header-height: 88px;
     }
 
     * {
@@ -43,7 +42,6 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: var(--header-offset);
     }
 
     body {
@@ -51,9 +49,11 @@
       font-family: "Montserrat", sans-serif;
       color: var(--text);
       background: var(--bg);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+    }
+
+    body.menu-open,
+    body.modal-open {
+      overflow: hidden;
     }
 
     img {
@@ -73,23 +73,32 @@
       font: inherit;
     }
 
-    button,
-    input,
-    select,
-    textarea,
-    a {
+    button {
       -webkit-tap-highlight-color: transparent;
-    }
-
-    input,
-    select,
-    textarea {
-      font-size: 16px;
     }
 
     .container {
       width: min(92%, var(--max));
       margin: 0 auto;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
     }
 
     .topbar {
@@ -113,31 +122,37 @@
       flex-wrap: wrap;
     }
 
-    .topbar-links a,
-    .footer-grid a,
-    .nav-menu a {
-      transition: color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
-    }
-
     .topbar-links a:hover {
       color: #fff;
     }
 
     header {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 80;
       box-shadow: 0 8px 20px rgba(13, 32, 56, 0.06);
-      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(220, 228, 238, 0.75);
     }
 
     .header-wrap {
       display: grid;
-      grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto;
+      grid-template-columns: 1fr auto;
+      gap: 16px 20px;
       align-items: center;
-      gap: 20px;
-      padding: 14px 0;
+      padding: 14px 0 16px;
+    }
+
+    .brand-area {
+      min-width: 0;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
 
     .brand {
@@ -157,6 +172,10 @@
       flex-shrink: 0;
     }
 
+    .brand-text {
+      min-width: 0;
+    }
+
     .brand-text h1 {
       margin: 0;
       font-size: 1.1rem;
@@ -166,21 +185,66 @@
 
     .brand-text span {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--muted);
-      margin-top: 3px;
+      margin-top: 4px;
+    }
+
+    .header-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .icon-btn {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--border);
+      background: #f7fbff;
+      color: var(--primary-dark);
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.25s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      background: #eef5fc;
+      border-color: #cfdceb;
+    }
+
+    .icon-btn:focus-visible,
+    .btn:focus-visible,
+    .btn-outline:focus-visible,
+    .btn-ghost:focus-visible,
+    .nav-menu a:focus-visible,
+    .searchbar input:focus-visible,
+    .field input:focus-visible,
+    .field select:focus-visible,
+    .field textarea:focus-visible {
+      outline: 3px solid rgba(15, 76, 129, 0.18);
+      outline-offset: 2px;
     }
 
     .searchbar {
+      grid-column: 1 / -1;
       display: flex;
       align-items: center;
       gap: 10px;
       background: #f6f9fc;
       border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 12px 18px;
-      min-width: 0;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+      border-radius: 16px;
+      padding: 12px 16px;
+      min-height: 54px;
+    }
+
+    .searchbar .icon {
+      color: var(--muted);
     }
 
     .searchbar input {
@@ -190,114 +254,45 @@
       width: 100%;
       min-width: 0;
       color: var(--text);
+      font-size: 0.97rem;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .btn,
-    .btn-outline,
-    .btn-ghost {
-      border: 0;
-      cursor: pointer;
-      border-radius: 14px;
-      padding: 12px 18px;
-      font-weight: 700;
-      transition: 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 48px;
-      text-align: center;
-    }
-
-    .btn {
-      background: var(--secondary);
-      color: #fff;
-      box-shadow: 0 10px 22px rgba(122, 184, 0, 0.24);
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      background: var(--secondary-dark);
-      transform: translateY(-1px);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-
-    .btn-outline:hover,
-    .btn-outline:focus-visible {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .btn-ghost {
-      background: #edf4fb;
-      color: var(--primary);
-    }
-
-    .btn-ghost:hover,
-    .btn-ghost:focus-visible {
-      background: #e1edf9;
-    }
-
-    :focus-visible {
-      outline: 3px solid rgba(15, 76, 129, 0.22);
-      outline-offset: 2px;
+    .searchbar input::placeholder {
+      color: #7d8ea4;
     }
 
     nav {
       background: var(--primary);
       color: #fff;
+      position: relative;
     }
 
     .nav-wrap {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      padding: 0;
+      gap: 16px;
+      min-height: 58px;
     }
 
     .nav-menu {
       display: flex;
       gap: 0;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .nav-menu a {
       padding: 18px 16px;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       font-weight: 600;
       font-size: 0.95rem;
+      transition: 0.2s ease;
     }
 
-    .nav-menu a:hover,
-    .nav-menu a:focus-visible {
+    .nav-menu a:hover {
       background: rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: 0;
-      color: #fff;
-      font-size: 1.7rem;
-      cursor: pointer;
-      padding: 10px 0;
-      min-height: 48px;
-      min-width: 48px;
-      border-radius: 12px;
     }
 
     .hero {
@@ -307,43 +302,44 @@
       align-items: center;
       color: #fff;
       background:
-        linear-gradient(90deg, rgba(7, 24, 43, 0.82) 0%, rgba(7, 24, 43, 0.52) 45%, rgba(7, 24, 43, 0.18) 100%),
+        linear-gradient(90deg, rgba(7, 24, 43, 0.84) 0%, rgba(7, 24, 43, 0.56) 45%, rgba(7, 24, 43, 0.2) 100%),
         url("assets/images/hero-pachacamac.jpg") center/cover no-repeat;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 30px;
       align-items: center;
-      padding: 70px 0;
+      padding: 72px 0;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
-      padding: 8px 14px;
+      padding: 9px 14px;
       border-radius: 999px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       font-weight: 600;
       backdrop-filter: blur(6px);
+      font-size: 0.94rem;
     }
 
     .hero h2 {
       margin: 0 0 14px;
-      font-size: clamp(2rem, 5vw, 4.3rem);
+      font-size: clamp(2rem, 5vw, 4.2rem);
       line-height: 0.98;
       font-weight: 800;
-      text-wrap: balance;
+      max-width: 760px;
     }
 
     .hero p {
       font-size: 1.05rem;
-      line-height: 1.7;
+      line-height: 1.75;
       max-width: 640px;
       color: #eaf3fc;
       margin: 0 0 26px;
@@ -356,9 +352,76 @@
       margin-bottom: 28px;
     }
 
+    .btn,
+    .btn-outline,
+    .btn-ghost {
+      border: 0;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+    }
+
+    .btn {
+      background: var(--secondary);
+      color: #fff;
+      box-shadow: 0 10px 22px rgba(122, 184, 0, 0.24);
+    }
+
+    .btn:hover {
+      background: var(--secondary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: #edf4fb;
+      color: var(--primary);
+    }
+
+    .btn-ghost:hover {
+      background: #e1edf9;
+    }
+
+    .hero .btn-outline {
+      border-color: rgba(255, 255, 255, 0.9);
+      color: #fff;
+    }
+
+    .hero .btn-outline:hover {
+      background: #fff;
+      color: var(--primary-dark);
+    }
+
+    .hero .btn-ghost {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .hero .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
     .hero-card {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(12px);
       border-radius: 26px;
       padding: 24px;
@@ -377,21 +440,23 @@
     }
 
     .hero-mini {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 16px;
+      min-height: 120px;
     }
 
     .hero-mini strong {
       display: block;
-      font-size: 1.1rem;
-      margin-bottom: 6px;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
     }
 
     .hero-mini span {
       display: block;
-      line-height: 1.55;
-      color: #eef6ff;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      color: #edf4fb;
     }
 
     .emergency-strip {
@@ -432,14 +497,12 @@
       margin: 0 0 10px;
       font-size: clamp(1.7rem, 3vw, 2.5rem);
       color: var(--primary-dark);
-      letter-spacing: -0.02em;
-      text-wrap: balance;
     }
 
     .section-subtitle {
       margin: 0 0 30px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
       max-width: 860px;
     }
 
@@ -456,52 +519,21 @@
       grid-template-columns: repeat(4, 1fr);
     }
 
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid #edf2f7;
-      overflow: hidden;
+    .services-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
 
-    .quick-card,
-    .service-card,
-    .news-card,
-    .contact-card,
-    .transparency-card {
-      padding: 24px;
+    .news-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
 
-    .icon-wrap {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(122, 184, 0, 0.14);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--secondary-dark);
-      font-size: 1.6rem;
-      margin-bottom: 18px;
+    .transparency-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
 
-    .quick-card h3,
-    .service-card h3,
-    .contact-card h3,
-    .transparency-card h3 {
-      margin: 0 0 10px;
-      color: var(--primary-dark);
-      font-size: 1.18rem;
-    }
-
-    .quick-card p,
-    .service-card p,
-    .contact-card p,
-    .transparency-card p,
-    .news-card p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      line-height: 1.65;
+    .contact-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: start;
     }
 
     .tools-wrap {
@@ -510,20 +542,81 @@
       gap: 26px;
     }
 
-    .tool-card {
-      padding: 28px;
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid #edf2f7;
+    }
+
+    .quick-card,
+    .service-card,
+    .transparency-card,
+    .tool-card,
+    .contact-panel {
+      padding: 24px;
+    }
+
+    .icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: rgba(122, 184, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary-dark);
+      margin-bottom: 18px;
+    }
+
+    .icon-wrap .icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .quick-card h3,
+    .service-card h3,
+    .transparency-card h3 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: 1.16rem;
+    }
+
+    .quick-card p,
+    .service-card p,
+    .transparency-card p,
+    .news-card p,
+    .tool-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .service-card ul {
+      margin: 0 0 20px 18px;
+      padding: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #edf8ef;
+      color: var(--success);
+      border: 1px solid #cfe9d5;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
     }
 
     .tool-card h3 {
       margin: 0 0 8px;
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       color: var(--primary-dark);
-      text-wrap: balance;
-    }
-
-    .tool-card p {
-      color: var(--muted);
-      margin: 0 0 22px;
     }
 
     .form-grid {
@@ -554,12 +647,12 @@
       border-radius: 12px;
       outline: none;
       transition: 0.2s ease;
-      min-height: 50px;
+      color: var(--text);
     }
 
     .field textarea {
-      min-height: 132px;
       resize: vertical;
+      min-height: 120px;
     }
 
     .field input:focus,
@@ -615,18 +708,6 @@
       font-weight: 600;
       display: none;
       line-height: 1.7;
-      overflow-wrap: anywhere;
-    }
-
-    .services-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .service-card ul {
-      margin: 0 0 20px 18px;
-      padding: 0;
-      color: var(--muted);
-      line-height: 1.7;
     }
 
     .stats {
@@ -643,8 +724,8 @@
     }
 
     .stat-card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 22px;
       padding: 28px;
       text-align: center;
@@ -657,15 +738,9 @@
       margin-bottom: 8px;
     }
 
-    .news-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
     .news-card {
       padding: 0;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
 
     .news-card img {
@@ -676,38 +751,21 @@
 
     .news-content {
       padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-start;
-      height: 100%;
     }
 
     .news-date {
       font-size: 0.88rem;
       color: var(--secondary-dark);
       font-weight: 700;
+      margin-bottom: 8px;
       display: inline-block;
     }
 
     .news-card h3 {
-      margin: 0;
+      margin: 0 0 10px;
       font-size: 1.1rem;
       color: var(--primary-dark);
       line-height: 1.45;
-    }
-
-    .transparency-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .contact-grid {
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: start;
-    }
-
-    .contact-panel {
-      padding: 28px;
     }
 
     .contact-list {
@@ -720,6 +778,7 @@
       border: 1px solid #e2ebf4;
       border-radius: 14px;
       padding: 16px;
+      line-height: 1.65;
     }
 
     .contact-item strong {
@@ -733,7 +792,7 @@
       min-height: 480px;
       border: 0;
       border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow);
     }
 
     footer {
@@ -765,7 +824,7 @@
     }
 
     .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
       padding-top: 18px;
       display: flex;
       justify-content: space-between;
@@ -774,30 +833,50 @@
       font-size: 0.92rem;
     }
 
+    .menu-overlay,
     .modal {
       position: fixed;
       inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: 0.25s ease;
+    }
+
+    .menu-overlay {
+      background: rgba(6, 19, 35, 0.45);
+      z-index: 88;
+    }
+
+    .menu-overlay.active,
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .modal {
       background: rgba(6, 19, 35, 0.65);
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
       z-index: 100;
     }
 
-    .modal.active {
-      display: flex;
-    }
-
     .modal-card {
-      width: min(100%, 520px);
-      max-height: min(90vh, 860px);
-      overflow: auto;
+      width: min(100%, 440px);
       background: #fff;
       border-radius: 22px;
       padding: 28px;
       box-shadow: 0 20px 50px rgba(5, 18, 33, 0.28);
       position: relative;
+      transform: translateY(8px);
+      transition: 0.25s ease;
+    }
+
+    .modal.active .modal-card {
+      transform: translateY(0);
     }
 
     .modal-close {
@@ -811,14 +890,15 @@
       height: 38px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .modal-card h3 {
       margin: 0 0 10px;
       color: var(--primary-dark);
-      font-size: 1.6rem;
-      line-height: 1.15;
+      font-size: 1.45rem;
     }
 
     .modal-card p {
@@ -827,28 +907,10 @@
       line-height: 1.65;
     }
 
-    .modal-note {
-      margin-top: 16px;
-      background: #f7fbff;
-      border: 1px solid #e1edf9;
-      padding: 14px;
-      border-radius: 14px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #edf8ef;
-      color: var(--success);
-      border: 1px solid #cfe9d5;
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      margin-bottom: 14px;
+    .account-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
     }
 
     .small {
@@ -857,10 +919,6 @@
     }
 
     @media (max-width: 1100px) {
-      :root {
-        --header-offset: 140px;
-      }
-
       .quick-grid,
       .services-grid,
       .transparency-grid,
@@ -879,69 +937,40 @@
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        min-height: auto;
-      }
-
       .emergency-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+    }
 
-      .header-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .header-actions {
-        justify-content: flex-start;
+    @media (min-width: 781px) {
+      .mobile-only {
+        display: none !important;
       }
     }
 
     @media (max-width: 780px) {
-      :root {
-        --header-offset: 126px;
-      }
-
-      .container {
-        width: min(94%, var(--max));
-      }
-
       .topbar {
-        font-size: 0.82rem;
-      }
-
-      .topbar .container {
-        padding: 8px 0;
-        gap: 8px;
-      }
-
-      .topbar-links {
-        width: 100%;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        gap: 10px;
-        padding-bottom: 2px;
-        scrollbar-width: none;
-      }
-
-      .topbar-links::-webkit-scrollbar {
         display: none;
       }
 
-      .topbar-links a {
-        white-space: nowrap;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 999px;
-        padding: 8px 12px;
+      header {
+        position: sticky;
       }
 
       .header-wrap {
+        grid-template-columns: 1fr;
         gap: 14px;
         padding: 12px 0 14px;
       }
 
-      .brand {
+      .brand-row {
         align-items: flex-start;
+      }
+
+      .brand {
+        align-items: center;
+        gap: 10px;
+        flex: 1;
       }
 
       .brand img {
@@ -954,53 +983,120 @@
       }
 
       .brand-text span {
-        font-size: 0.74rem;
+        font-size: 0.76rem;
+      }
+
+      .header-tools {
+        gap: 8px;
+      }
+
+      .icon-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
       }
 
       .searchbar {
         order: 3;
         width: 100%;
-        padding: 12px 16px;
+        padding: 11px 14px;
+        border-radius: 14px;
       }
 
-      .header-actions {
-        width: 100%;
-        gap: 10px;
-      }
-
-      .header-actions > * {
-        flex: 1 1 0;
-      }
-
-      .nav-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+      nav {
+        min-height: 0;
       }
 
       .nav-wrap {
-        display: block;
-        padding: 10px 0;
+        min-height: 0;
+        padding: 0;
       }
 
       .nav-menu {
-        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100dvh;
+        width: min(84vw, 340px);
+        background: #ffffff;
+        color: var(--text);
+        box-shadow: -12px 0 32px rgba(9, 27, 48, 0.18);
+        z-index: 90;
         flex-direction: column;
-        width: 100%;
-        padding: 10px 0 2px;
+        align-items: stretch;
+        padding: 86px 20px 24px;
+        transform: translateX(100%);
+        transition: 0.28s ease;
+        overflow-y: auto;
+        flex-wrap: nowrap;
       }
 
       .nav-menu.active {
-        display: flex;
+        transform: translateX(0);
       }
 
       .nav-menu a {
-        padding: 14px 4px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 15px 0;
+        border-bottom: 1px solid #e7eef6;
+        color: var(--primary-dark);
+        font-size: 1rem;
       }
 
-      section {
-        padding: 52px 0;
+      .hero {
+        min-height: auto;
+        background-position: center;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 42px 0 54px;
+      }
+
+      .badge {
+        font-size: 0.84rem;
+        margin-bottom: 14px;
+      }
+
+      .hero h2 {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+        line-height: 1.04;
+      }
+
+      .hero p {
+        font-size: 0.97rem;
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 0;
+      }
+
+      .hero-actions .btn,
+      .hero-actions .btn-outline,
+      .hero-actions .btn-ghost {
+        width: 100%;
+      }
+
+      .hero-card {
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      .hero-mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-mini {
+        min-height: auto;
+      }
+
+      .emergency-strip {
+        margin-top: -20px;
       }
 
       .quick-grid,
@@ -1009,237 +1105,141 @@
       .transparency-grid,
       .stats-grid,
       .emergency-grid,
-      .form-grid,
-      .hero-mini-grid {
+      .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        background:
-          linear-gradient(180deg, rgba(7, 24, 43, 0.84) 0%, rgba(7, 24, 43, 0.62) 48%, rgba(7, 24, 43, 0.52) 100%),
-          url("assets/images/hero-pachacamac.jpg") center/cover no-repeat;
+      section {
+        padding: 54px 0;
       }
 
-      .hero-grid {
-        padding: 44px 0 34px;
-        gap: 18px;
-      }
-
-      .badge {
-        margin-bottom: 14px;
-        font-size: 0.82rem;
-      }
-
-      .hero h2 {
-        font-size: clamp(2rem, 9vw, 2.8rem);
-        line-height: 1.02;
-      }
-
-      .hero p {
-        font-size: 0.98rem;
-        margin-bottom: 22px;
-      }
-
-      .hero-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .hero-actions > * {
-        width: 100%;
-      }
-
-      .hero-card {
-        padding: 18px;
-        border-radius: 22px;
-      }
-
-      .hero-mini {
-        padding: 14px;
-      }
-
-      .emergency-strip {
-        margin-top: -18px;
-      }
-
-      .emergency-grid {
-        gap: 12px;
-      }
-
-      .emergency-card {
-        min-height: auto;
-        padding: 16px;
-      }
-
-      .card,
-      .map-box iframe {
-        border-radius: 16px;
+      .section-subtitle {
+        margin-bottom: 24px;
       }
 
       .quick-card,
       .service-card,
       .transparency-card,
-      .contact-panel,
       .tool-card,
-      .news-content {
-        padding: 18px;
-      }
-
-      .tool-card h3,
-      .modal-card h3 {
-        font-size: 1.3rem;
+      .contact-panel {
+        padding: 20px;
       }
 
       .summary-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        gap: 6px;
       }
 
       .summary-row strong {
         text-align: left;
       }
 
+      .stats .section-title,
+      .stats .section-subtitle {
+        text-align: left;
+      }
+
       .news-card img {
-        height: 200px;
-      }
-
-      .stats-grid {
-        gap: 14px;
-      }
-
-      .stat-card {
-        padding: 20px 18px;
-      }
-
-      .contact-grid,
-      .tools-wrap,
-      .footer-grid {
-        gap: 18px;
+        height: 210px;
       }
 
       .map-box iframe {
-        min-height: 320px;
+        min-height: 340px;
       }
 
       .footer-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
 
       .footer-bottom {
         flex-direction: column;
-        align-items: flex-start;
       }
 
       .modal {
-        padding: 12px;
         align-items: flex-end;
+        padding: 0;
       }
 
       .modal-card {
         width: 100%;
-        max-height: 92vh;
         border-radius: 22px 22px 0 0;
-        padding: 24px 18px 20px;
+        padding: 24px 20px 28px;
       }
     }
-
-    @media (max-width: 560px) {
-      :root {
-        --header-offset: 116px;
-      }
-
-      .topbar .container > div:first-child {
-        font-size: 0.78rem;
-      }
-
-      .header-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .header-actions .btn,
-      .header-actions .btn-outline,
-      .hero-actions .btn,
-      .hero-actions .btn-outline,
-      .hero-actions .btn-ghost,
-      .quick-card .btn,
-      .quick-card .btn-outline,
-      .service-card .btn-outline,
-      .transparency-card .btn-outline,
-      .news-content .btn-outline,
-      #accountForm .btn,
-      #accountForm .btn-ghost,
-      #paymentForm .btn,
-      #procedureForm .btn,
-      #loginForm .btn,
-      #registerForm .btn {
-        width: 100%;
-      }
-
-      #accountForm > div[style],
-      #paymentForm > div[style],
-      #procedureForm > div[style] {
-        display: grid !important;
-        grid-template-columns: 1fr;
-        gap: 10px !important;
-      }
-
-      .icon-wrap {
-        width: 56px;
-        height: 56px;
-        margin-bottom: 14px;
-      }
-
-      .news-card img {
-        height: 180px;
-      }
-    }
-    
   </style>
 </head>
 <body>
   <div class="topbar">
     <div class="container">
-      <div>Municipalidad Distrital de Pachac'e1mac 'b7 Gobierno local al servicio del vecino</div>
+      <div>Municipalidad Distrital de Pachacámac · Gobierno local al servicio del vecino</div>
       <div class="topbar-links">
         <a href="#transparencia">Transparencia</a>
-        <a href="#tramites">Tr'e1mites</a>
+        <a href="#tramites">Trámites</a>
         <a href="#contacto">Contacto</a>
-        <a href="#" id="openLoginTop">Portal Ciudadano</a>
+        <a href="#" id="openAccountTop">Portal Ciudadano</a>
       </div>
     </div>
   </div>
 
   <header>
     <div class="container header-wrap">
-      <a href="#" class="brand">
-        <img src="assets/images/logo-pachacamac.png" alt="Logo Municipalidad de Pachac'e1mac" />
-        <div class="brand-text">
-          <h1>Municipalidad de Pachac'e1mac</h1>
-          <span>Portal institucional y servicios digitales</span>
+      <div class="brand-area">
+        <div class="brand-row">
+          <a href="#inicio" class="brand" aria-label="Ir al inicio">
+            <img src="assets/images/logo-pachacamac.png" alt="Logo Municipalidad de Pachacámac" />
+            <div class="brand-text">
+              <h1>Municipalidad de Pachacámac</h1>
+              <span>Portal institucional y servicios digitales</span>
+            </div>
+          </a>
+
+          <div class="header-tools">
+            <button
+              class="icon-btn"
+              id="openAccountHeader"
+              type="button"
+              aria-label="Abrir opciones de usuario"
+            >
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M4 20c1.6-3.4 4.3-5 8-5s6.4 1.6 8 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+            <button
+              class="icon-btn mobile-only"
+              id="navToggle"
+              type="button"
+              aria-label="Abrir menú principal"
+              aria-expanded="false"
+              aria-controls="navMenu"
+            >
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
-      </a>
 
-      <div class="searchbar">
-        <span>uc0u55357 u56590 </span>
-        <input type="text" placeholder="Buscar trámites, pagos, arbitrios, licencias..." aria-label="Buscar trámites y servicios" />
-      </div>
-
-      <div class="header-actions">
-        <button class="btn-outline" id="openRegisterHeader">Registrarse</button>
-        <button class="btn" id="openLoginHeader">Iniciar sesi'f3n</button>
+        <div class="searchbar">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Buscar trámites, pagos, arbitrios, licencias..." aria-label="Buscar trámites y servicios" />
+        </div>
       </div>
     </div>
 
     <nav>
       <div class="container nav-wrap">
-        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="navMenu">uc0u9776 </button>
-        <div class="nav-menu" id="navMenu" role="navigation">
+        <div class="nav-menu" id="navMenu">
           <a href="#inicio">Inicio</a>
           <a href="#servicios">Servicios</a>
           <a href="#tributos">Tributos</a>
-          <a href="#tramites">Tr'e1mites</a>
+          <a href="#tramites">Trámites</a>
           <a href="#noticias">Noticias</a>
           <a href="#transparencia">Transparencia</a>
           <a href="#contacto">Contacto</a>
@@ -1248,42 +1248,45 @@
     </nav>
   </header>
 
+  <div class="menu-overlay" id="menuOverlay"></div>
+
   <main>
     <section class="hero" id="inicio">
       <div class="container hero-grid">
         <div>
-          <div class="badge">uc0u55356 u57307 u65039  Pachac'e1mac avanza contigo</div>
-          <h2>Portal Digital de la Municipalidad de Pachac'e1mac</h2>
+          <div class="badge">Pachacámac avanza contigo</div>
+          <h2>Portal Digital de la Municipalidad de Pachacámac</h2>
           <p>
-            Consulta tu estado de cuenta, revisa arbitrios, realiza pagos en l'ednea,
-            registra tr'e1mites, accede a transparencia y mantente informado desde una
+            Consulta tu estado de cuenta, revisa arbitrios, realiza pagos en línea,
+            registra trámites, accede a transparencia y mantente informado desde una
             sola plataforma institucional.
           </p>
+
           <div class="hero-actions">
             <a href="#tributos" class="btn">Pagar tributos</a>
-            <a href="#tramites" class="btn-outline">Registrar tr'e1mite</a>
-            <button class="btn-ghost" id="openLoginHero">Mi cuenta</button>
+            <a href="#tramites" class="btn-outline">Registrar trámite</a>
+            <button class="btn-ghost" type="button" id="openAccountHero">Mi cuenta</button>
           </div>
         </div>
 
         <div class="hero-card">
-          <h3>Accesos r'e1pidos del vecino</h3>
+          <h3>Accesos rápidos del vecino</h3>
           <div class="hero-mini-grid">
             <div class="hero-mini">
-              <strong>Estado de Cuenta</strong>
+              <strong>Estado de cuenta</strong>
               <span>Consulta deuda predial, arbitrios y convenios.</span>
             </div>
             <div class="hero-mini">
-              <strong>Pagos Online</strong>
-              <span>Simulaci'f3n de pasarela para presentaci'f3n comercial.</span>
+              <strong>Pagos online</strong>
+              <span>Flujo visual de pago para presentación comercial.</span>
             </div>
             <div class="hero-mini">
-              <strong>Mesa de Partes</strong>
+              <strong>Mesa de partes</strong>
               <span>Ingreso y seguimiento de documentos.</span>
             </div>
             <div class="hero-mini">
               <strong>Licencias</strong>
-              <span>Tr'e1mites, fiscalizaci'f3n y habilitaciones urbanas.</span>
+              <span>Trámites, fiscalización y habilitaciones urbanas.</span>
             </div>
           </div>
         </div>
@@ -1301,7 +1304,7 @@
           <span>944 850 101</span>
         </div>
         <div class="emergency-card">
-          <strong>Gesti'f3n Tributaria</strong>
+          <strong>Gestión Tributaria</strong>
           <span>(01) 231-4588</span>
         </div>
         <div class="emergency-card">
@@ -1315,35 +1318,55 @@
       <div class="container">
         <h2 class="section-title">Canales digitales para el ciudadano</h2>
         <p class="section-subtitle">
-          Plataforma orientada a recaudaci'f3n tributaria, atenci'f3n al vecino, servicios
-          municipales y acceso r'e1pido a informaci'f3n clave.
+          Plataforma orientada a recaudación tributaria, atención al vecino, servicios
+          municipales y acceso rápido a información clave.
         </p>
 
         <div class="quick-grid">
           <article class="card quick-card">
-            <div class="icon-wrap">uc0u55357 u56499 </div>
-            <h3>Pago de Contribuyentes</h3>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="2"/>
+                <path d="M3 10h18" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <h3>Pago de contribuyentes</h3>
             <p>Paga predial, arbitrios municipales, multas administrativas y fraccionamientos.</p>
-            <a href="#tributos" class="btn">Ir al m'f3dulo</a>
+            <a href="#tributos" class="btn">Ir al módulo</a>
           </article>
 
           <article class="card quick-card">
-            <div class="icon-wrap">uc0u55357 u56516 </div>
-            <h3>Estado de Cuenta</h3>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 4h9l3 3v13H6z" stroke="currentColor" stroke-width="2"/>
+                <path d="M15 4v3h3" stroke="currentColor" stroke-width="2"/>
+                <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Estado de cuenta</h3>
             <p>Consulta saldos pendientes, historial de cargos y detalle por ejercicio fiscal.</p>
             <a href="#tributos" class="btn-outline">Consultar</a>
           </article>
 
           <article class="card quick-card">
-            <div class="icon-wrap">uc0u55358 u56830 </div>
-            <h3>Arbitrios Municipales</h3>
-            <p>Visualiza limpieza p'fablica, parques y jardines, serenazgo y cronograma de pagos.</p>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M6 18V9l6-4 6 4v9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Arbitrios municipales</h3>
+            <p>Visualiza limpieza pública, parques y jardines, serenazgo y cronograma de pagos.</p>
             <a href="#servicios" class="btn-outline">Ver arbitrios</a>
           </article>
 
           <article class="card quick-card">
-            <div class="icon-wrap">uc0u55357 u56556 </div>
-            <h3>Mesa de Partes</h3>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 4h12a2 2 0 0 1 2 2v12l-4-3H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <h3>Mesa de partes</h3>
             <p>Registra documentos, solicitudes y escritos con seguimiento de expediente.</p>
             <a href="#tramites" class="btn-outline">Registrar</a>
           </article>
@@ -1353,18 +1376,18 @@
 
     <section id="tributos">
       <div class="container">
-        <h2 class="section-title">Tributos, arbitrios y pagos en l'ednea</h2>
+        <h2 class="section-title">Tributos, arbitrios y pagos en línea</h2>
         <p class="section-subtitle">
-          M'f3dulo central para presentar a cliente: consulta por contribuyente, generaci'f3n
-          de estado de cuenta, simulaci'f3n de pago, fraccionamiento y resumen de deuda.
+          Módulo central para presentar a cliente: consulta por contribuyente, generación
+          de estado de cuenta, simulación de pago, fraccionamiento y resumen de deuda.
         </p>
 
         <div class="tools-wrap">
           <article class="card tool-card">
-            <div class="status-pill">uc0u9679  M'f3dulo de consulta tributaria</div>
+            <div class="status-pill">Módulo de consulta tributaria</div>
             <h3>Estado de cuenta del contribuyente</h3>
             <p>
-              Ingresa tu tipo y n'famero de documento para visualizar una maqueta realista
+              Ingresa tu tipo y número de documento para visualizar una maqueta realista
               del estado tributario municipal.
             </p>
 
@@ -1376,17 +1399,17 @@
                     <option value="">Seleccione</option>
                     <option value="DNI">DNI</option>
                     <option value="RUC">RUC</option>
-                    <option value="CE">Carn'e9 de Extranjer'eda</option>
+                    <option value="CE">Carné de Extranjería</option>
                   </select>
                 </div>
 
                 <div class="field">
-                  <label for="docNumber">N'famero de documento</label>
+                  <label for="docNumber">Número de documento</label>
                   <input id="docNumber" type="text" placeholder="Ingrese documento" required />
                 </div>
 
                 <div class="field full">
-                  <label for="taxYear">Per'edodo fiscal</label>
+                  <label for="taxYear">Período fiscal</label>
                   <select id="taxYear">
                     <option>2026</option>
                     <option>2025</option>
@@ -1404,8 +1427,8 @@
 
             <div class="summary-box" id="accountSummary">
               <h4>Resumen de cuenta municipal</h4>
-              <div class="summary-row"><span>Contribuyente</span><strong id="sumName">'97</strong></div>
-              <div class="summary-row"><span>Documento</span><strong id="sumDoc">'97</strong></div>
+              <div class="summary-row"><span>Contribuyente</span><strong id="sumName">—</strong></div>
+              <div class="summary-row"><span>Documento</span><strong id="sumDoc">—</strong></div>
               <div class="summary-row"><span>Impuesto predial</span><strong id="sumPredial">S/ 0.00</strong></div>
               <div class="summary-row"><span>Arbitrios municipales</span><strong id="sumArbitrios">S/ 0.00</strong></div>
               <div class="summary-row"><span>Multas / recargos</span><strong id="sumMultas">S/ 0.00</strong></div>
@@ -1414,17 +1437,17 @@
           </article>
 
           <article class="card tool-card">
-            <div class="status-pill">uc0u9679  Pasarela de pago simulada</div>
+            <div class="status-pill">Pasarela de pago simulada</div>
             <h3>Pago de tributos y arbitrios</h3>
             <p>
-              Flujo visual para sustentaci'f3n comercial. Permite mostrar selecci'f3n de
-              concepto, monto y confirmaci'f3n de operaci'f3n.
+              Flujo visual para sustentación comercial. Permite mostrar selección de
+              concepto, monto y confirmación de operación.
             </p>
 
             <form id="paymentForm">
               <div class="form-grid">
                 <div class="field">
-                  <label for="payerName">Nombre o raz'f3n social</label>
+                  <label for="payerName">Nombre o razón social</label>
                   <input id="payerName" type="text" placeholder="Ingrese nombre del contribuyente" required />
                 </div>
 
@@ -1454,15 +1477,15 @@
                   <label for="paymentMethod">Medio de pago</label>
                   <select id="paymentMethod" required>
                     <option value="">Seleccione</option>
-                    <option value="Tarjeta de cr'e9dito">Tarjeta de cr'e9dito</option>
-                    <option value="Tarjeta de d'e9bito">Tarjeta de d'e9bito</option>
+                    <option value="Tarjeta de crédito">Tarjeta de crédito</option>
+                    <option value="Tarjeta de débito">Tarjeta de débito</option>
                     <option value="Billetera digital">Billetera digital</option>
                     <option value="Banca por internet">Banca por internet</option>
                   </select>
                 </div>
 
                 <div class="field">
-                  <label for="paymentEmail">Correo de confirmaci'f3n</label>
+                  <label for="paymentEmail">Correo de confirmación</label>
                   <input id="paymentEmail" type="email" placeholder="correo@ejemplo.com" required />
                 </div>
               </div>
@@ -1482,80 +1505,108 @@
       <div class="container">
         <h2 class="section-title">Servicios municipales principales</h2>
         <p class="section-subtitle">
-          M'f3dulos funcionales alineados a una municipalidad real: recaudaci'f3n, licencias,
-          atenci'f3n ciudadana, gesti'f3n urbana y acceso institucional.
+          Módulos funcionales alineados a una municipalidad real: recaudación, licencias,
+          atención ciudadana, gestión urbana y acceso institucional.
         </p>
 
         <div class="services-grid">
           <article class="card service-card">
-            <div class="icon-wrap">uc0u55356 u57312 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M6 18V9l6-4 6 4v9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
             <h3>Predial y arbitrios</h3>
-            <p>Consulta obligaciones tributarias y revisi'f3n por ejercicio.</p>
+            <p>Consulta obligaciones tributarias y revisión por ejercicio.</p>
             <ul>
               <li>Estado de cuenta anual</li>
               <li>Detalle de cuotas</li>
               <li>Descarga de resumen tributario</li>
               <li>Fraccionamiento de deuda</li>
             </ul>
-            <a href="#tributos" class="btn-outline">Ver m'f3dulo</a>
+            <a href="#tributos" class="btn-outline">Ver módulo</a>
           </article>
 
           <article class="card service-card">
-            <div class="icon-wrap">uc0u55357 u56541 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 4h10v16H7z" stroke="currentColor" stroke-width="2"/>
+                <path d="M10 8h4M10 12h4M10 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
             <h3>Licencias y autorizaciones</h3>
-            <p>Gesti'f3n de procedimientos administrativos del TUPA municipal.</p>
+            <p>Gestión de procedimientos administrativos del TUPA municipal.</p>
             <ul>
               <li>Licencia de funcionamiento</li>
-              <li>Autorizaci'f3n de anuncios</li>
+              <li>Autorización de anuncios</li>
               <li>Constancias y certificados</li>
-              <li>Inspecci'f3n t'e9cnica y seguimiento</li>
+              <li>Inspección técnica y seguimiento</li>
             </ul>
-            <a href="#tramites" class="btn-outline">Solicitar tr'e1mite</a>
+            <a href="#tramites" class="btn-outline">Solicitar trámite</a>
           </article>
 
           <article class="card service-card">
-            <div class="icon-wrap">uc0u55357 u56999 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 18h18" stroke="currentColor" stroke-width="2"/>
+                <path d="M6 18V9h4v9M14 18V5h4v13" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
             <h3>Obras y desarrollo urbano</h3>
-            <p>Consulta sobre habilitaci'f3n urbana, edificaciones y catastro.</p>
+            <p>Consulta sobre habilitación urbana, edificaciones y catastro.</p>
             <ul>
-              <li>Licencia de edificaci'f3n</li>
-              <li>Par'e1metros urban'edsticos</li>
+              <li>Licencia de edificación</li>
+              <li>Parámetros urbanísticos</li>
               <li>Consulta catastral</li>
-              <li>Regularizaci'f3n de obra</li>
+              <li>Regularización de obra</li>
             </ul>
-            <a href="#contacto" class="btn-outline">Solicitar orientaci'f3n</a>
+            <a href="#contacto" class="btn-outline">Solicitar orientación</a>
           </article>
 
           <article class="card service-card">
-            <div class="icon-wrap">uc0u55357 u57057 u65039 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3l8 4v5c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V7l8-4z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
             <h3>Seguridad ciudadana</h3>
-            <p>Canales r'e1pidos para serenazgo y alertas vecinales.</p>
+            <p>Canales rápidos para serenazgo y alertas vecinales.</p>
             <ul>
               <li>Emergencias y auxilio</li>
-              <li>Incidencias en v'eda p'fablica</li>
+              <li>Incidencias en vía pública</li>
               <li>Reporte vecinal</li>
-              <li>Coordinaci'f3n preventiva</li>
+              <li>Coordinación preventiva</li>
             </ul>
             <a href="#contacto" class="btn-outline">Contactar</a>
           </article>
 
           <article class="card service-card">
-            <div class="icon-wrap">uc0u55357 u56556 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 4h12a2 2 0 0 1 2 2v12l-4-3H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
             <h3>Mesa de partes virtual</h3>
-            <p>Ingreso digital de documentos con trazabilidad b'e1sica.</p>
+            <p>Ingreso digital de documentos con trazabilidad básica.</p>
             <ul>
               <li>Registro de expediente</li>
-              <li>N'famero de seguimiento</li>
+              <li>Número de seguimiento</li>
               <li>Adjuntos y observaciones</li>
-              <li>Historial de atenci'f3n</li>
+              <li>Historial de atención</li>
             </ul>
             <a href="#tramites" class="btn-outline">Ingresar expediente</a>
           </article>
 
           <article class="card service-card">
-            <div class="icon-wrap">uc0u55357 u56522 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 5h14v14H5z" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
             <h3>Transparencia y datos</h3>
-            <p>Informaci'f3n p'fablica, instrumentos de gesti'f3n y rendici'f3n institucional.</p>
+            <p>Información pública, instrumentos de gestión y rendición institucional.</p>
             <ul>
               <li>Presupuesto institucional</li>
               <li>POI, PEI y ROF</li>
@@ -1572,8 +1623,8 @@
       <div class="container">
         <h2 class="section-title" style="color:#fff;">Indicadores institucionales</h2>
         <p class="section-subtitle" style="color:#dbe9f7;">
-          Bloque visual para mostrar capacidad de gesti'f3n, alcance ciudadano y modernizaci'f3n
-          de servicios en la presentaci'f3n al cliente.
+          Bloque visual para mostrar capacidad de gestión, alcance ciudadano y modernización
+          de servicios en la presentación al cliente.
         </p>
 
         <div class="stats-grid">
@@ -1599,10 +1650,10 @@
 
     <section id="tramites">
       <div class="container">
-        <h2 class="section-title">Registro de tr'e1mites y mesa de partes</h2>
+        <h2 class="section-title">Registro de trámites y mesa de partes</h2>
         <p class="section-subtitle">
           Formulario de maqueta para mostrar ingreso de solicitud ciudadana, tipo de
-          tr'e1mite y generaci'f3n de c'f3digo de expediente.
+          trámite y generación de código de expediente.
         </p>
 
         <article class="card tool-card">
@@ -1614,7 +1665,7 @@
               </div>
 
               <div class="field">
-                <label for="procedureEmail">Correo electr'f3nico</label>
+                <label for="procedureEmail">Correo electrónico</label>
                 <input id="procedureEmail" type="email" placeholder="correo@ejemplo.com" required />
               </div>
 
@@ -1624,30 +1675,30 @@
               </div>
 
               <div class="field">
-                <label for="procedureType">Tipo de tr'e1mite</label>
+                <label for="procedureType">Tipo de trámite</label>
                 <select id="procedureType" required>
                   <option value="">Seleccione</option>
                   <option value="Mesa de Partes">Mesa de Partes</option>
                   <option value="Licencia de Funcionamiento">Licencia de Funcionamiento</option>
                   <option value="Solicitud Tributaria">Solicitud Tributaria</option>
-                  <option value="Acceso a la Informaci'f3n P'fablica">Acceso a la Informaci'f3n P'fablica</option>
+                  <option value="Acceso a la Información Pública">Acceso a la Información Pública</option>
                   <option value="Reclamo / Queja Vecinal">Reclamo / Queja Vecinal</option>
                 </select>
               </div>
 
               <div class="field full">
                 <label for="procedureSubject">Asunto</label>
-                <input id="procedureSubject" type="text" placeholder="Resumen del tr'e1mite o solicitud" required />
+                <input id="procedureSubject" type="text" placeholder="Resumen del trámite o solicitud" required />
               </div>
 
               <div class="field full">
                 <label for="procedureDetail">Detalle</label>
-                <textarea id="procedureDetail" rows="5" placeholder="Describa el tr'e1mite, solicitud o requerimiento"></textarea>
+                <textarea id="procedureDetail" rows="5" placeholder="Describa el trámite, solicitud o requerimiento"></textarea>
               </div>
             </div>
 
             <div style="margin-top:16px;">
-              <button type="submit" class="btn">Registrar tr'e1mite</button>
+              <button type="submit" class="btn">Registrar trámite</button>
             </div>
           </form>
 
@@ -1660,38 +1711,38 @@
       <div class="container">
         <h2 class="section-title">Noticias y actividades municipales</h2>
         <p class="section-subtitle">
-          Tarjetas de contenido para campa'f1as, actividades vecinales, anuncios oficiales
-          y difusi'f3n de acciones de la gesti'f3n municipal.
+          Tarjetas de contenido para campañas, actividades vecinales, anuncios oficiales
+          y difusión de acciones de la gestión municipal.
         </p>
 
         <div class="news-grid">
           <article class="card news-card">
-            <img src="assets/images/noticia-1.jpeg" alt="Campa'f1a tributaria municipal" />
+            <img src="assets/images/noticia-1.jpg" alt="Campaña tributaria municipal" />
             <div class="news-content">
               <span class="news-date">07.04.2026</span>
-              <h3>Pachac'e1mac impulsa campa'f1a de beneficios por pronto pago tributario</h3>
-              <p>La comuna fortalece la recaudaci'f3n responsable con facilidades para los contribuyentes del distrito.</p>
-              <a href="#" class="btn-outline">Leer m'e1s</a>
+              <h3>Pachacámac impulsa campaña de beneficios por pronto pago tributario</h3>
+              <p>La comuna fortalece la recaudación responsable con facilidades para los contribuyentes del distrito.</p>
+              <a href="#" class="btn-outline">Leer más</a>
             </div>
           </article>
 
           <article class="card news-card">
-            <img src="assets/images/noticia-2.jpg" alt="Actividad cultural en Pachac'e1mac" />
+            <img src="assets/images/noticia-2.jpg" alt="Actividad cultural en Pachacámac" />
             <div class="news-content">
               <span class="news-date">05.04.2026</span>
-              <h3>Municipalidad presenta agenda cultural y tur'edstica para promover el distrito</h3>
-              <p>Se desarrollan actividades comunitarias, art'edsticas y de puesta en valor del patrimonio local.</p>
-              <a href="#" class="btn-outline">Leer m'e1s</a>
+              <h3>Municipalidad presenta agenda cultural y turística para promover el distrito</h3>
+              <p>Se desarrollan actividades comunitarias, artísticas y de puesta en valor del patrimonio local.</p>
+              <a href="#" class="btn-outline">Leer más</a>
             </div>
           </article>
 
           <article class="card news-card">
-            <img src="assets/images/noticia-3.jpeg" alt="Obras y mantenimiento urbano" />
+            <img src="assets/images/noticia-3.jpg" alt="Obras y mantenimiento urbano" />
             <div class="news-content">
               <span class="news-date">02.04.2026</span>
-              <h3>Avanzan acciones de mantenimiento vial y recuperaci'f3n de espacios p'fablicos</h3>
-              <p>Se priorizan zonas de alto tr'e1nsito y entornos vecinales para mejorar seguridad y orden urbano.</p>
-              <a href="#" class="btn-outline">Leer m'e1s</a>
+              <h3>Avanzan acciones de mantenimiento vial y recuperación de espacios públicos</h3>
+              <p>Se priorizan zonas de alto tránsito y entornos vecinales para mejorar seguridad y orden urbano.</p>
+              <a href="#" class="btn-outline">Leer más</a>
             </div>
           </article>
         </div>
@@ -1700,38 +1751,57 @@
 
     <section id="transparencia">
       <div class="container">
-        <h2 class="section-title">Portal de transparencia y acceso a la informaci'f3n</h2>
+        <h2 class="section-title">Portal de transparencia y acceso a la información</h2>
         <p class="section-subtitle">
-          Bloque dise'f1ado para evidenciar cumplimiento institucional, acceso a documentos,
-          instrumentos de gesti'f3n y publicaci'f3n de informaci'f3n p'fablica.
+          Bloque diseñado para evidenciar cumplimiento institucional, acceso a documentos,
+          instrumentos de gestión y publicación de información pública.
         </p>
 
         <div class="transparency-grid">
           <article class="card transparency-card">
-            <div class="icon-wrap">uc0u55357 u56513 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 4h12v16H6z" stroke="currentColor" stroke-width="2"/>
+                <path d="M9 8h6M9 12h6M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
             <h3>Normas y ordenanzas</h3>
-            <p>Ordenanzas, decretos de alcald'eda, resoluciones y disposiciones vigentes.</p>
+            <p>Ordenanzas, decretos de alcaldía, resoluciones y disposiciones vigentes.</p>
             <a href="#" class="btn-outline">Ver documentos</a>
           </article>
 
           <article class="card transparency-card">
-            <div class="icon-wrap">uc0u55357 u56524 </div>
-            <h3>Instrumentos de gesti'f3n</h3>
-            <p>PEI, POI, ROF, MOF, CAP, TUPA y dem'e1s instrumentos institucionales.</p>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Instrumentos de gestión</h3>
+            <p>PEI, POI, ROF, MOF, CAP, TUPA y demás instrumentos institucionales.</p>
             <a href="#" class="btn-outline">Ver instrumentos</a>
           </article>
 
           <article class="card transparency-card">
-            <div class="icon-wrap">uc0u55357 u56508 </div>
-            <h3>Presupuesto y ejecuci'f3n</h3>
-            <p>Informaci'f3n presupuestal y seguimiento de ejecuci'f3n para fines de transparencia.</p>
-            <a href="#" class="btn-outline">Ver ejecuci'f3n</a>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2"/>
+                <path d="M7 18V10M12 18V6M17 18V13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Presupuesto y ejecución</h3>
+            <p>Información presupuestal y seguimiento de ejecución para fines de transparencia.</p>
+            <a href="#" class="btn-outline">Ver ejecución</a>
           </article>
 
           <article class="card transparency-card">
-            <div class="icon-wrap">uc0u55357 u56421 </div>
+            <div class="icon-wrap">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/>
+                <path d="M5 19c1.6-3 4-4.5 7-4.5s5.4 1.5 7 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
             <h3>Directorio municipal</h3>
-            <p>Alcald'eda, gerencias, subgerencias, oficinas de atenci'f3n y contactos institucionales.</p>
+            <p>Alcaldía, gerencias, subgerencias, oficinas de atención y contactos institucionales.</p>
             <a href="#contacto" class="btn-outline">Ver directorio</a>
           </article>
         </div>
@@ -1742,8 +1812,8 @@
       <div class="container">
         <h2 class="section-title">Contacto institucional</h2>
         <p class="section-subtitle">
-          Informaci'f3n referencial para tu maqueta comercial. Puedes reemplazar direcciones,
-          tel'e9fonos, correos e integraci'f3n del mapa con los datos reales del cliente.
+          Información referencial para tu maqueta comercial. Puedes reemplazar direcciones,
+          teléfonos, correos e integración del mapa con los datos reales del cliente.
         </p>
 
         <div class="contact-grid">
@@ -1751,14 +1821,14 @@
             <div class="contact-list">
               <div class="contact-item">
                 <strong>Sede principal</strong>
-                Plaza de Armas de Pachac'e1mac, Lima, Per'fa
+                Plaza de Armas de Pachacámac, Lima, Perú
               </div>
               <div class="contact-item">
-                <strong>Central telef'f3nica</strong>
+                <strong>Central telefónica</strong>
                 (01) 231-4567
               </div>
               <div class="contact-item">
-                <strong>Atenci'f3n tributaria</strong>
+                <strong>Atención tributaria</strong>
                 rentas@munipachacamac.gob.pe
               </div>
               <div class="contact-item">
@@ -1766,8 +1836,8 @@
                 mesadepartes@munipachacamac.gob.pe
               </div>
               <div class="contact-item">
-                <strong>Horario de atenci'f3n</strong>
-                Lunes a viernes 'b7 8:00 a.m. a 5:00 p.m.
+                <strong>Horario de atención</strong>
+                Lunes a viernes · 8:00 a.m. a 5:00 p.m.
               </div>
             </div>
           </article>
@@ -1777,7 +1847,7 @@
               src="https://www.google.com/maps?q=Pachacamac%20Lima%20Peru&output=embed"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              title="Mapa Municipalidad de Pachac'e1mac"
+              title="Mapa Municipalidad de Pachacámac"
             ></iframe>
           </div>
         </div>
@@ -1789,10 +1859,10 @@
     <div class="container">
       <div class="footer-grid">
         <div>
-          <h4>Municipalidad de Pachac'e1mac</h4>
+          <h4>Municipalidad de Pachacámac</h4>
           <p style="line-height:1.8; margin:0; color:#dbe7f3;">
-            Maqueta institucional para presentaci'f3n comercial con enfoque en servicios
-            digitales, consulta tributaria, arbitrios y tr'e1mites municipales.
+            Maqueta institucional para presentación comercial con enfoque en servicios
+            digitales, consulta tributaria, arbitrios y trámites municipales.
           </p>
         </div>
 
@@ -1813,54 +1883,85 @@
         </div>
 
         <div>
-          <h4>Atenci'f3n</h4>
+          <h4>Atención</h4>
           <a href="#">Libro de reclamaciones</a>
           <a href="#">Preguntas frecuentes</a>
-          <a href="#">T'e9rminos y condiciones</a>
-          <a href="#">Pol'edtica de privacidad</a>
+          <a href="#">Términos y condiciones</a>
+          <a href="#">Política de privacidad</a>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span>'a9 2026 Municipalidad de Pachac'e1mac. Todos los derechos reservados.</span>
-        <span>Dise'f1o de maqueta web para presentaci'f3n a cliente.</span>
+        <span>© 2026 Municipalidad de Pachacámac. Todos los derechos reservados.</span>
+        <span>Diseño de maqueta web para presentación a cliente.</span>
       </div>
     </div>
   </footer>
 
-  <!-- Modal Login -->
-  <div class="modal" id="loginModal">
+  <div class="modal" id="accountModal" aria-hidden="true">
     <div class="modal-card">
-      <button class="modal-close" data-close="loginModal">'d7</button>
-      <h3>Acceder al portal ciudadano</h3>
-      <p>Consulta tus obligaciones tributarias, pagos, expedientes y servicios municipales en l'ednea.</p>
+      <button class="modal-close" type="button" data-close="accountModal" aria-label="Cerrar ventana">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
 
-      <form id="loginForm">
-        <div class="field">
-          <label for="loginEmail">Correo electr'f3nico</label>
-          <input id="loginEmail" type="email" placeholder="correo@ejemplo.com" required />
-        </div>
-        <div class="field" style="margin-top:14px;">
-          <label for="loginPassword">Contrase'f1a</label>
-          <input id="loginPassword" type="password" placeholder="********" required />
-        </div>
-        <div style="margin-top:18px;">
-          <button type="submit" class="btn" style="width:100%;">Iniciar sesi'f3n</button>
-        </div>
-      </form>
+      <h3>Portal Ciudadano</h3>
+      <p>
+        Accede a tus consultas, pagos, expedientes y servicios municipales desde una
+        sola plataforma.
+      </p>
 
-      <div class="modal-note">
-        Este acceso es una simulaci'f3n visual para la maqueta. Luego puede conectarse a un backend real.
+      <div class="account-actions">
+        <button type="button" class="btn" id="openLoginButton">Iniciar sesión</button>
+        <button type="button" class="btn-outline" id="openRegisterButton">Registrarse</button>
       </div>
+
+      <p class="small" style="margin-top:16px;">
+        Esta interacción es una simulación visual para la maqueta.
+      </p>
     </div>
   </div>
 
-  <!-- Modal Registro -->
-  <div class="modal" id="registerModal">
+  <div class="modal" id="loginModal" aria-hidden="true">
     <div class="modal-card">
-      <button class="modal-close" data-close="registerModal">'d7</button>
+      <button class="modal-close" type="button" data-close="loginModal" aria-label="Cerrar ventana">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <h3>Iniciar sesión</h3>
+      <p>Consulta obligaciones tributarias, pagos y expedientes en línea.</p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginEmail">Correo electrónico</label>
+          <input id="loginEmail" type="email" placeholder="correo@ejemplo.com" required />
+        </div>
+
+        <div class="field" style="margin-top:14px;">
+          <label for="loginPassword">Contraseña</label>
+          <input id="loginPassword" type="password" placeholder="********" required />
+        </div>
+
+        <div style="margin-top:18px;">
+          <button type="submit" class="btn" style="width:100%;">Ingresar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="registerModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" type="button" data-close="registerModal" aria-label="Cerrar ventana">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+
       <h3>Registro de usuario</h3>
-      <p>Crea tu cuenta para acceder a consultas, pagos y tr'e1mites municipales.</p>
+      <p>Crea tu cuenta para acceder a consultas, pagos y trámites municipales.</p>
 
       <form id="registerForm">
         <div class="form-grid">
@@ -1868,18 +1969,22 @@
             <label for="regName">Nombre completo</label>
             <input id="regName" type="text" placeholder="Ingrese nombres y apellidos" required />
           </div>
+
           <div class="field">
             <label for="regDoc">DNI / RUC</label>
             <input id="regDoc" type="text" placeholder="Ingrese documento" required />
           </div>
+
           <div class="field full">
-            <label for="regEmail">Correo electr'f3nico</label>
+            <label for="regEmail">Correo electrónico</label>
             <input id="regEmail" type="email" placeholder="correo@ejemplo.com" required />
           </div>
+
           <div class="field">
-            <label for="regPassword">Contrase'f1a</label>
-            <input id="regPassword" type="password" placeholder="M'ednimo 8 caracteres" required />
+            <label for="regPassword">Contraseña</label>
+            <input id="regPassword" type="password" placeholder="Mínimo 8 caracteres" required />
           </div>
+
           <div class="field">
             <label for="regDistrict">Sector / zona</label>
             <input id="regDistrict" type="text" placeholder="Ingrese sector o zona" />
@@ -1890,56 +1995,119 @@
           <button type="submit" class="btn" style="width:100%;">Crear cuenta</button>
         </div>
       </form>
-
-      <div class="modal-note">
-        Para producci'f3n real: validaci'f3n documental, autenticaci'f3n segura, captcha, env'edo de correo y cifrado.
-      </div>
     </div>
   </div>
 
   <script>
+    const body = document.body;
+
     const navToggle = document.getElementById("navToggle");
     const navMenu = document.getElementById("navMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
 
-    navToggle.addEventListener("click", () => {
-      const isOpen = navMenu.classList.toggle("active");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
+    function openMenu() {
+      navMenu.classList.add("active");
+      menuOverlay.classList.add("active");
+      body.classList.add("menu-open");
+      navToggle.setAttribute("aria-expanded", "true");
+    }
 
-    document.querySelectorAll("#navMenu a").forEach(link => {
+    function closeMenu() {
+      navMenu.classList.remove("active");
+      menuOverlay.classList.remove("active");
+      body.classList.remove("menu-open");
+      if (navToggle) navToggle.setAttribute("aria-expanded", "false");
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = navMenu.classList.contains("active");
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+    }
+
+    menuOverlay.addEventListener("click", closeMenu);
+
+    document.querySelectorAll("#navMenu a").forEach((link) => {
       link.addEventListener("click", () => {
-        navMenu.classList.remove("active");
-        navToggle.setAttribute("aria-expanded", "false");
+        if (window.innerWidth <= 780) closeMenu();
       });
     });
 
+    const accountModal = document.getElementById("accountModal");
     const loginModal = document.getElementById("loginModal");
     const registerModal = document.getElementById("registerModal");
 
-    const openLoginIds = ["openLoginTop", "openLoginHeader", "openLoginHero"];
-    const openRegisterIds = ["openRegisterHeader"];
+    const openAccountIds = ["openAccountTop", "openAccountHeader", "openAccountHero"];
 
-    openLoginIds.forEach(id => {
+    function openModal(modal) {
+      document.querySelectorAll(".modal").forEach((item) => item.classList.remove("active"));
+      modal.classList.add("active");
+      body.classList.add("modal-open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal(modal) {
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+
+      const anyOpen = [...document.querySelectorAll(".modal")].some((m) =>
+        m.classList.contains("active")
+      );
+
+      if (!anyOpen) {
+        body.classList.remove("modal-open");
+      }
+    }
+
+    openAccountIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (el) el.addEventListener("click", () => loginModal.classList.add("active"));
+      if (el) {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          openModal(accountModal);
+        });
+      }
     });
 
-    openRegisterIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener("click", () => registerModal.classList.add("active"));
+    document.getElementById("openLoginButton").addEventListener("click", () => {
+      closeModal(accountModal);
+      openModal(loginModal);
     });
 
-    document.querySelectorAll("[data-close]").forEach(btn => {
+    document.getElementById("openRegisterButton").addEventListener("click", () => {
+      closeModal(accountModal);
+      openModal(registerModal);
+    });
+
+    document.querySelectorAll("[data-close]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = document.getElementById(btn.dataset.close);
-        if (target) target.classList.remove("active");
+        if (target) closeModal(target);
       });
     });
 
-    [loginModal, registerModal].forEach(modal => {
-      modal.addEventListener("click", e => {
-        if (e.target === modal) modal.classList.remove("active");
+    [accountModal, loginModal, registerModal].forEach((modal) => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal(modal);
       });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMenu();
+        document.querySelectorAll(".modal.active").forEach((modal) => closeModal(modal));
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 780) {
+        closeMenu();
+      }
     });
 
     const accountForm = document.getElementById("accountForm");
@@ -1957,11 +2125,11 @@
       const base = docNumber.length * 37;
       const predial = (base + 145.8).toFixed(2);
       const arbitrios = (base * 0.74 + 118.4).toFixed(2);
-      const multas = (docNumber.length % 2 === 0 ? 45.00 : 0.00).toFixed(2);
+      const multas = (docNumber.length % 2 === 0 ? 45.0 : 0.0).toFixed(2);
       const total = (parseFloat(predial) + parseFloat(arbitrios) + parseFloat(multas)).toFixed(2);
 
-      document.getElementById("sumName").textContent = "Contribuyente Pachac'e1mac";
-      document.getElementById("sumDoc").textContent = `${docType} ${docNumber} 'b7 Ejercicio ${taxYear}`;
+      document.getElementById("sumName").textContent = "Contribuyente Pachacámac";
+      document.getElementById("sumDoc").textContent = `${docType} ${docNumber} · Ejercicio ${taxYear}`;
       document.getElementById("sumPredial").textContent = `S/ ${predial}`;
       document.getElementById("sumArbitrios").textContent = `S/ ${arbitrios}`;
       document.getElementById("sumMultas").textContent = `S/ ${multas}`;
@@ -1992,15 +2160,16 @@
       const operation = "PCM-" + Math.floor(100000 + Math.random() * 900000);
 
       paymentResult.innerHTML = `
-        Operaci'f3n simulada registrada con 'e9xito.<br><br>
-        <strong>C'f3digo:</strong> ${operation}<br>
+        Operación simulada registrada con éxito.<br><br>
+        <strong>Código:</strong> ${operation}<br>
         <strong>Contribuyente:</strong> ${name}<br>
         <strong>Documento:</strong> ${doc}<br>
         <strong>Concepto:</strong> ${concept}<br>
         <strong>Monto:</strong> S/ ${amount}<br>
         <strong>Medio de pago:</strong> ${method}<br>
-        <strong>Confirmaci'f3n enviada a:</strong> ${email}
+        <strong>Confirmación enviada a:</strong> ${email}
       `;
+
       paymentResult.style.display = "block";
       paymentResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
       paymentForm.reset();
@@ -2018,12 +2187,13 @@
       const code = "EXP-" + new Date().getFullYear() + "-" + Math.floor(10000 + Math.random() * 90000);
 
       procedureResult.innerHTML = `
-        Tr'e1mite registrado correctamente.<br><br>
+        Trámite registrado correctamente.<br><br>
         <strong>Expediente:</strong> ${code}<br>
         <strong>Solicitante:</strong> ${name}<br>
-        <strong>Tipo de tr'e1mite:</strong> ${type}<br>
+        <strong>Tipo de trámite:</strong> ${type}<br>
         <strong>Asunto:</strong> ${subject}
       `;
+
       procedureResult.style.display = "block";
       procedureResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
       procedureForm.reset();
@@ -2031,15 +2201,15 @@
 
     document.getElementById("loginForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      alert("Inicio de sesi'f3n simulado correctamente.");
-      loginModal.classList.remove("active");
+      alert("Inicio de sesión simulado correctamente.");
+      closeModal(loginModal);
       this.reset();
     });
 
     document.getElementById("registerForm").addEventListener("submit", function (e) {
       e.preventDefault();
       alert("Registro simulado correctamente.");
-      registerModal.classList.remove("active");
+      closeModal(registerModal);
       this.reset();
     });
   </script>
